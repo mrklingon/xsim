@@ -12,6 +12,12 @@ input.onButtonPressed(Button.A, function () {
 })
 function doTorp () {
     torp = game.createSprite(xloc, 4)
+    for (let value of Ties) {
+        if (value.get(LedSpriteProperty.X) == xloc) {
+            killTie(value)
+            game.addScore(randint(2, 7))
+        }
+    }
     torp.turn(Direction.Left, 90)
     for (let index = 0; index < 4; index++) {
         torp.move(1)
@@ -44,10 +50,12 @@ input.onGesture(Gesture.Shake, function () {
     }
 })
 function killTie (tie: game.LedSprite) {
-    blah = Ties.removeAt(Ties.indexOf(tie))
-    blah.delete()
-    basic.pause(randint(200, 600))
-    mkTies(tcount)
+    if (Ties.length > 0) {
+        blah = Ties.removeAt(Ties.indexOf(tie))
+        blah.delete()
+        basic.pause(randint(200, 600))
+        mkTies(tcount)
+    }
 }
 let blah: game.LedSprite = null
 let nuTie: game.LedSprite = null
@@ -73,6 +81,7 @@ images.createBigImage(`
     . . . . . . . . . .
     `).scrollImage(1, 200)
 droid = 0
+let wait = 4000
 xloc = 2
 xwing = game.createSprite(xloc, 4)
 Ties = []
@@ -80,15 +89,11 @@ tcount = 1
 basic.pause(1000)
 mkTies(tcount)
 doTorp()
-game.setLife(5)
+game.setLife(3)
 basic.forever(function () {
     for (let value of Ties) {
         value.move(1)
         basic.pause(333)
-        if (value.isTouching(torp)) {
-            killTie(value)
-            game.addScore(5)
-        }
         if (value.isTouching(xwing)) {
             game.removeLife(1)
         }
@@ -105,7 +110,7 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
-    basic.pause(2000)
+    basic.pause(wait / tcount)
     tcount += 1
     if (tcount > 4) {
         tcount = 4
