@@ -110,6 +110,11 @@ basic.forever(function () {
     }
 })
 basic.forever(function () {
+    if (game.isGameOver()) {
+        droid = 0
+    }
+})
+basic.forever(function () {
     basic.pause(wait / tcount)
     tcount += 1
     if (tcount > 4) {
