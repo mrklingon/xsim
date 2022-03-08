@@ -13,7 +13,7 @@ input.onButtonPressed(Button.A, function () {
 function doTorp () {
     torp = game.createSprite(xloc, 4)
     for (let value of Ties) {
-        if (value.get(LedSpriteProperty.X) == xloc) {
+        if (value.get(LedSpriteProperty.Y) < 4 && value.get(LedSpriteProperty.X) == xloc) {
             killTie(value)
             game.addScore(randint(2, 7))
         }
